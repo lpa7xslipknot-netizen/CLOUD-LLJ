@@ -136,4 +136,4 @@ bash scripts/run_pipeline.sh
 
 ## 👨‍💻 Authors : Subhanil Bhaduri (RA2512039010007) and Anirban Mondal (RA2512039010002)
 
-Submitted as part of Big Data course case study.
+Submitted as part of Cloud Computing course case study.
