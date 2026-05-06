@@ -1,0 +1,76 @@
+# ============================================================
+# Big Data E-Commerce Pipeline — Configuration File
+# ============================================================
+
+# ---- Kafka Settings ----
+kafka:
+  bootstrap_servers: "localhost:9092"
+  topics:
+    weblogs: "weblogs"
+    transactions: "transactions"
+    reviews: "customer_reviews"
+    social_media: "social_feeds"
+  producer:
+    batch_size: 16384
+    linger_ms: 10
+    compression_type: "gzip"
+  consumer:
+    group_id: "ecommerce_consumers"
+    auto_offset_reset: "earliest"
+    enable_auto_commit: true
+
+# ---- HDFS / Storage Settings ----
+hdfs:
+  namenode: "hdfs://localhost:9000"
+  paths:
+    raw_weblogs: "/data/raw/weblogs/"
+    raw_transactions: "/data/raw/transactions/"
+    raw_reviews: "/data/raw/reviews/"
+    raw_social: "/data/raw/social_media/"
+    processed: "/data/processed/"
+    warehouse: "/data/warehouse/"
+
+# ---- Spark Settings ----
+spark:
+  app_name: "EcommerceAnalytics"
+  master: "local[*]"        # Change to yarn for cluster
+  executor_memory: "4g"
+  driver_memory: "2g"
+  executor_cores: 2
+  shuffle_partitions: 200
+
+# ---- Data Volume Reference (per day) ----
+data_volumes:
+  weblogs_gb: 2000       # 2 TB
+  transactions_gb: 500
+  reviews_gb: 200
+  social_media_gb: 100
+
+# ---- Security Settings ----
+security:
+  encryption_at_rest: true
+  encryption_in_transit: true
+  ssl_enabled: true
+  ranger_enabled: true
+  roles:
+    - name: "data_engineer"
+      access: ["read", "write", "process"]
+    - name: "data_scientist"
+      access: ["read", "analyze"]
+    - name: "analyst"
+      access: ["read"]
+    - name: "admin"
+      access: ["read", "write", "process", "delete", "manage"]
+
+# ---- MLflow Settings ----
+mlflow:
+  tracking_uri: "http://localhost:5000"
+  experiment_name: "ecommerce_analytics"
+  artifact_location: "/mlflow/artifacts"
+
+# ---- Logging ----
+logging:
+  level: "INFO"
+  log_file: "logs/pipeline.log"
+  max_bytes: 10485760   # 10 MB
+  backup_count: 5
